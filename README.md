@@ -6,6 +6,44 @@ A document question-answering system that searches your documents and answers qu
 
 This system processes documents, stores them in a searchable format, and uses a language model to answer questions based on the retrieved content. It supports PDF, DOCX, and TXT files.
 
+---
+
+## Architecture
+
+The system follows a Retrieval Augmented Generation (RAG) architecture with conversation history management. The diagram below illustrates the complete system flow:
+
+### System Flow
+
+1. **User Interaction**: Users initiate queries through a session interface
+2. **Semantic Search**: The system performs semantic search against the indexed knowledge base (ChromaDB)
+3. **Context Retrieval**: Relevant document chunks are retrieved based on semantic similarity
+4. **Conversation History**: The last 10 conversation windows are fetched using session information
+5. **Final Prompt Construction**: The system combines:
+   - System Prompt
+   - Conversation History (last 10 windows)
+   - Retrieved Context
+   - User Query
+6. **LLM Processing**: The comprehensive prompt is sent to the Large Language Model
+7. **Response Generation**: The LLM generates a response based on the provided context
+8. **History Storage**: The conversation (query and response) is stored for future context
+
+[![image.png](https://i.postimg.cc/3RnPMrMK/image.png)](https://postimg.cc/ZBvfpSKg)
+
+---
+
+### Document Ingestion Pipeline
+
+The document ingestion process follows these steps:
+
+1. **Load**: Raw documents (PDF, DOCX, TXT) are loaded from the data directory
+2. **Split**: Documents are split into smaller chunks with overlap for better context preservation
+3. **Embed**: Text chunks are converted into numerical vector embeddings using sentence transformers
+4. **Store**: Embeddings and metadata are stored in ChromaDB for efficient semantic search
+
+[![image.png](https://i.postimg.cc/dt7gXK5s/image.png)](https://postimg.cc/kBmj6Lrz)
+
+---
+
 ## Features
 
 - Document loading for PDF, DOCX, and TXT files
